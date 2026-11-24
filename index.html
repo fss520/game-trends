@@ -50,6 +50,7 @@ tr:hover{background:#f9fafb}
 <li><a href="#brief">每日简报</a></li>
 <li><a href="#new7">最近7天新游</a></li>
 <li><a href="#material">素材榜</a></li>
+<li><a href="#trend">品类趋势</a></li>
 </ul>
 </nav>
 
@@ -267,5 +268,39 @@ tr:hover{background:#f9fafb}
 <tr class="cat-row"><td rowspan="1">魔幻 <span style="color:var(--muted);font-weight:400">(1款)</span></td><td><img class="game-icon" src="https://ai.xianjianwendao.com/kb/imgproxy?platform=buy_material&app=1407952" alt="" loading="lazy">我叫MT：崛起</td><td>-</td><td class="rank">54</td></tr>
 <tr class="cat-row"><td rowspan="1">养成 <span style="color:var(--muted);font-weight:400">(1款)</span></td><td><img class="game-icon" src="https://ai.xianjianwendao.com/kb/imgproxy?platform=buy_material&app=94100" alt="" loading="lazy">杖剑传说</td><td>厦门雷霆互动网络有限公司</td><td class="rank">80</td></tr>
 </tbody></table></div></section>
+<section id="trend" class="section">
+<h2>📈 素材品类加权综合排名周趋势</h2>
+<p style="color:var(--muted)">基于 buy_material 日榜数据，按 <strong>品类</strong> 以 <strong>score</strong> 为权重计算加权平均排名；数值越低表示该品类在素材榜整体越靠前。</p>
+<div style="position:relative;height:460px;width:100%;margin-top:16px">
+<canvas id="categoryTrendChart"></canvas>
+</div>
+</section>
 <div class="footer">由 Hermes Agent 通过游研所 MCP 自动生成 · 数据仅供参考</div>
-</div></body></html>
+</div><script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const trendData = {"labels": ["11-17", "11-18", "11-19", "11-20", "11-21", "11-22", "11-23"], "datasets": [{"label": "策略", "data": [41.68, 42.93, 41.68, 41.68, 44.53, 41.68, 41.68], "borderColor": "#ff7a45", "backgroundColor": "#ff7a45", "tension": 0.3, "pointRadius": 4}, {"label": "网赚", "data": [50.49, 59.98, 50.49, 50.49, 49.1, 50.49, 50.49], "borderColor": "#7c4dff", "backgroundColor": "#7c4dff", "tension": 0.3, "pointRadius": 4}, {"label": "塔防", "data": [43.45, 33.34, 43.45, 43.45, 48.6, 43.45, 43.45], "borderColor": "#10b981", "backgroundColor": "#10b981", "tension": 0.3, "pointRadius": 4}, {"label": "消除", "data": [53.83, 51.72, 53.83, 53.83, 51.6, 53.83, 53.83], "borderColor": "#f59e0b", "backgroundColor": "#f59e0b", "tension": 0.3, "pointRadius": 4}, {"label": "二合", "data": [50.98, 45.44, 50.98, 50.98, 39.33, 50.98, 50.98], "borderColor": "#ef4444", "backgroundColor": "#ef4444", "tension": 0.3, "pointRadius": 4}, {"label": "回合制", "data": [31.06, 26.83, 31.06, 31.06, 30.51, 31.06, 31.06], "borderColor": "#3b82f6", "backgroundColor": "#3b82f6", "tension": 0.3, "pointRadius": 4}, {"label": "女性经营", "data": [43.2, 41.13, 43.2, 43.2, 43.46, 43.2, 43.2], "borderColor": "#8b5cf6", "backgroundColor": "#8b5cf6", "tension": 0.3, "pointRadius": 4}, {"label": "捕鱼", "data": [39.18, 26.61, 39.18, 39.18, 25.78, 39.18, 39.18], "borderColor": "#ec4899", "backgroundColor": "#ec4899", "tension": 0.3, "pointRadius": 4}, {"label": "其他", "data": [49.89, 45.23, 49.89, 49.89, 55.57, 49.89, 49.89], "borderColor": "#06b6d4", "backgroundColor": "#06b6d4", "tension": 0.3, "pointRadius": 4}]};
+const ctx = document.getElementById('categoryTrendChart').getContext('2d');
+new Chart(ctx, {
+  type: 'line',
+  data: trendData,
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8 } },
+      tooltip: { callbacks: { label: (c) => `${c.dataset.label}: 综合排名 ${c.parsed.y}` } }
+    },
+    scales: {
+      y: {
+        reverse: true,
+        title: { display: true, text: '加权综合排名（越低越强）' },
+        suggestedMin: 1,
+        suggestedMax: 100
+      },
+      x: { title: { display: true, text: '日期' } }
+    }
+  }
+});
+</script>
+</body></html>
