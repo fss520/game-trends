@@ -51,6 +51,7 @@ tr:hover{background:#f9fafb}
 <li><a href="#new7">最近7天新游</a></li>
 <li><a href="#material">素材榜</a></li>
 <li><a href="#trend">品类趋势</a></li>
+<li><a href="#userTrend">用户关注趋势</a></li>
 </ul>
 </nav>
 
@@ -275,6 +276,13 @@ tr:hover{background:#f9fafb}
 <canvas id="categoryTrendChart"></canvas>
 </div>
 </section>
+<section id="userTrend" class="section">
+<h2>👥 各品类用户关注度月趋势</h2>
+<p style="color:var(--muted)">基于微信 + 抖音小游戏人气榜近 30 天名次计算的<strong>代理指标</strong>：按 <code>game_type_sub</code> 分品类，以 <code>101 - 名次</code> 为权重加权平均名次，再转换为 0-100 的关注度指数；数值越高代表该品类整体越受用户关注。<br><em>注：游研所 MCP 未开放真实 MAU/DAU，此曲线为热度代理，仅供趋势参考。</em></p>
+<div style="position:relative;height:460px;width:100%;margin-top:16px">
+<canvas id="userTrendChart"></canvas>
+</div>
+</section>
 <div class="footer">由 Hermes Agent 通过游研所 MCP 自动生成 · 数据仅供参考</div>
 </div><script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -296,6 +304,31 @@ new Chart(ctx, {
         reverse: true,
         title: { display: true, text: '加权综合排名（越低越强）' },
         suggestedMin: 1,
+        suggestedMax: 100
+      },
+      x: { title: { display: true, text: '日期' } }
+    }
+  }
+});
+</script>
+<script>
+const userTrendData = {"labels": ["10-26", "10-27", "10-28", "10-29", "10-30", "10-31", "11-01", "11-02", "11-03", "11-04", "11-05", "11-06", "11-07", "11-08", "11-09", "11-10", "11-11", "11-12", "11-13", "11-14", "11-15", "11-16", "11-17", "11-18", "11-19", "11-20", "11-21", "11-22", "11-23", "11-24"], "datasets": [{"label": "斗地主", "data": [80.81, 82.38, 79.84, 78.25, 76.39, 80.62, 83.78, 81.49, 77.6, 77.09, 75.18, 76.29, 78.1, 83.37, 84.74, 79.04, 78.5, 76.37, 77.87, 77.74, 88.63, 88.7, 89.39, 85.09, 83.01, 83.83, 80.6, 78.69, 86.86, 81.45], "borderColor": "#ff7a45", "backgroundColor": "#ff7a45", "tension": 0.3, "pointRadius": 3}, {"label": "休闲益智", "data": [75.66, 79.45, 79.71, 79.08, 80.21, 79.5, 82.72, 82.74, 84.15, 82.39, 81.67, 81.74, 81.55, 82.39, 81.85, 82.62, 78.9, 77.93, 77.45, 78.76, 81.63, 80.5, 81.51, 80.99, 81.72, 82.32, 82.37, 82.48, 80.92, 81.61], "borderColor": "#7c4dff", "backgroundColor": "#7c4dff", "tension": 0.3, "pointRadius": 3}, {"label": "女性经营", "data": [77.62, 78.54, 77.84, 77.27, 79.46, 78.12, 76.55, 73.74, 76.56, 79.95, 80.6, 79.28, 77.86, 73.58, 71.34, 77.49, 78.84, 78.76, 77.59, 74.25, 74.13, 72.54, 73.52, 76.99, 75.76, 78.33, 75.07, 71.22, 76.72, 78.62], "borderColor": "#10b981", "backgroundColor": "#10b981", "tension": 0.3, "pointRadius": 3}, {"label": "二合", "data": [73.18, 73.96, 76.28, 72.26, 73.61, 72.4, 70.42, 69.26, 71.16, 73.68, 75.72, 74.04, 75.16, 73.0, 72.27, 74.45, 76.09, 75.43, 75.91, 74.58, 72.84, 73.1, 72.13, 73.39, 73.41, 75.31, 74.29, 72.98, 73.14, 75.78], "borderColor": "#f59e0b", "backgroundColor": "#f59e0b", "tension": 0.3, "pointRadius": 3}, {"label": "桌游", "data": [70.0, 75.0, 70.0, 68.0, 72.0, 77.0, 70.0, 69.0, 74.0, 75.0, 77.0, 68.0, 68.0, 61.0, 62.0, 70.0, 77.0, 73.0, 70.0, 72.0, 69.0, 72.0, 75.0, 72.0, 72.0, 76.0, 75.0, 69.0, 70.0, 74.0], "borderColor": "#ef4444", "backgroundColor": "#ef4444", "tension": 0.3, "pointRadius": 3}, {"label": "塔防", "data": [70.14, 66.04, 65.29, 64.75, 64.68, 66.96, 75.29, 72.15, 69.95, 70.43, 71.01, 71.38, 75.5, 76.25, 76.78, 70.56, 72.06, 70.64, 69.7, 74.15, 72.44, 73.73, 70.85, 71.28, 70.11, 66.55, 67.98, 76.21, 73.45, 68.26], "borderColor": "#3b82f6", "backgroundColor": "#3b82f6", "tension": 0.3, "pointRadius": 3}, {"label": "策略", "data": [78.39, 72.8, 70.69, 67.8, 68.4, 70.56, 73.76, 73.11, 71.69, 67.53, 68.81, 68.51, 69.81, 67.95, 68.74, 70.97, 70.47, 71.15, 70.55, 69.01, 68.96, 69.94, 68.26, 68.3, 68.2, 68.75, 72.41, 73.99, 76.39, 69.72], "borderColor": "#8b5cf6", "backgroundColor": "#8b5cf6", "tension": 0.3, "pointRadius": 3}, {"label": "女性", "data": [63.0, 68.42, 63.88, 65.58, 78.1, 76.0, 59.03, 67.0, 67.75, 74.39, 66.73, 63.39, 72.0, 63.0, 55.0, 65.0, 60.0, 61.0, 69.0, 77.0, 80.0, 74.0, 69.0, 75.0, 77.0, 83.0, 81.0, 62.0, 71.0, 81.0], "borderColor": "#ec4899", "backgroundColor": "#ec4899", "tension": 0.3, "pointRadius": 3}, {"label": "螺丝", "data": [60.07, 64.3, 65.42, 67.04, 71.75, 69.25, 61.9, 62.38, 65.06, 72.99, 71.9, 75.96, 75.96, 69.86, 69.86, 70.5, 70.69, 69.02, 69.01, 69.33, 65.18, 62.18, 58.18, 60.77, 63.25, 63.25, 66.67, 62.54, 58.09, 65.03], "borderColor": "#06b6d4", "backgroundColor": "#06b6d4", "tension": 0.3, "pointRadius": 3}, {"label": "IO", "data": [71.59, 62.07, 56.34, 53.09, 53.28, 60.31, 67.45, 70.64, 65.41, 63.29, 61.13, 58.76, 68.13, 71.23, 76.99, 69.98, 65.38, 64.81, 64.57, 67.68, 71.41, 78.85, 73.5, 62.69, 61.5, 61.48, 63.28, 71.62, 73.73, 65.97], "borderColor": "#84cc16", "backgroundColor": "#84cc16", "tension": 0.3, "pointRadius": 3}]};
+const uctx = document.getElementById('userTrendChart').getContext('2d');
+new Chart(uctx, {
+  type: 'line',
+  data: userTrendData,
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8 } },
+      tooltip: { callbacks: { label: (c) => `${c.dataset.label}: 关注度 ${c.parsed.y}` } }
+    },
+    scales: {
+      y: {
+        title: { display: true, text: '用户关注度指数（越高越热）' },
+        suggestedMin: 0,
         suggestedMax: 100
       },
       x: { title: { display: true, text: '日期' } }
