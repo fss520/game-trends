@@ -301,7 +301,7 @@ tr:hover{background:#f9fafb}
 <section id="trend" class="section">
 <section id="trend" class="section">
 <h2> 素材品类素材量周趋势</h2>
-<p style="color:var(--muted)">基于 buy_material 日榜数据，按自然周聚合，统计每个品类的<strong>素材量总和</strong>（score 加总）。数值越高代表该品类投放素材越多。<strong>时间范围从年初至今</strong>，虚线部分为基于近 8 周趋势的线性预测。</p>
+<p style="color:var(--muted)">基于 buy_material 日榜数据，按自然周聚合，统计每个品类的<strong>素材量总和</strong>（score 加总）。数值越高代表该品类投放素材越多。buy_material 历史数据从 2026 年 7 月起较完整，缺失周已跳过；虚线部分为基于近 8 周趋势的线性预测。</p>
 <div style="position:relative;height:460px;width:100%;margin-top:16px">
 <canvas id="categoryTrendChart"></canvas>
 </div>
@@ -309,8 +309,8 @@ tr:hover{background:#f9fafb}
 </section>
 <section id="userTrend" class="section">
 <section id="userTrend" class="section">
-<h2> 各品类在榜产品数月趋势</h2>
-<p style="color:var(--muted)">基于微信 + 抖音小游戏人气榜，按自然周聚合统计每个品类在 Top 100 中的<strong>产品数量</strong>。在榜产品越多，说明该品类当前用户关注度越高。<strong>时间范围从年初至今</strong>，虚线部分为基于近 8 周趋势的线性预测。</p>
+<h2> 各品类在榜产品数趋势</h2>
+<p style="color:var(--muted)">基于微信 + 抖音小游戏人气榜，按自然周聚合统计每个品类在 Top 100 中的<strong>产品数量</strong>。<strong>时间范围从年初至今</strong>，在榜产品越多，说明该品类当前用户关注度越高。虚线部分为基于近 8 周趋势的线性预测。</p>
 <div style="position:relative;height:460px;width:100%;margin-top:16px">
 <canvas id="userTrendChart"></canvas>
 </div>
